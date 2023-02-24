@@ -29,6 +29,7 @@ def test_get_info_from_dataset():
     assert info.nodes_count == dataset_nodes
     assert info.edges_count == dataset_edges
 
+
 def test_build_graph_to_file(tmp_path: str):
     first_nodes = 5
     first_label = "first"
@@ -37,11 +38,15 @@ def test_build_graph_to_file(tmp_path: str):
 
     expected = "expected.dot"
     expected_path = os.path.join(tmp_path, expected)
-    expected_graph = cfpq.labeled_two_cycles_graph(first_nodes, second_nodes, labels=(first_label, second_label))
+    expected_graph = cfpq.labeled_two_cycles_graph(
+        first_nodes, second_nodes, labels=(first_label, second_label)
+    )
     utilities.save_graph_to_file(expected_graph, expected_path)
 
     actual = "actual.dot"
     actual_path = os.path.join(tmp_path, actual)
-    utilities.create_two_cycles_graph_to_file(actual_path, first_nodes, first_label, second_nodes, first_label)
+    utilities.create_two_cycles_graph_to_file(
+        actual_path, first_nodes, first_label, second_nodes, first_label
+    )
 
     assert filecmp.cmp(actual_path, expected_path)

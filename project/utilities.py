@@ -21,8 +21,14 @@ def save_graph_to_file(graph: ntwx.Graph, file_path: str):
     pydot_graph.write_raw(file_path)
 
 
-def create_two_cycles_graph_to_file(file_path: str,
-                                    first_nodes: int, first_label: str,
-                                    second_nodes: int, second_label: str):
-    graph = cfpq.labeled_two_cycles_graph(n=first_nodes, m=second_nodes, labels=(first_label, second_label))
+def create_two_cycles_graph_to_file(
+    file_path: str,
+    first_nodes: int,
+    first_label: str,
+    second_nodes: int,
+    second_label: str,
+):
+    graph = cfpq.labeled_two_cycles_graph(
+        n=first_nodes, m=second_nodes, labels=(first_label, second_label)
+    )
     save_graph_to_file(graph, file_path)
