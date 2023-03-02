@@ -1,5 +1,10 @@
 import cfpq_data as cfpq
-from pyformlang.finite_automaton import DeterministicFiniteAutomaton, NondeterministicFiniteAutomaton, State, Symbol
+from pyformlang.finite_automaton import (
+    DeterministicFiniteAutomaton,
+    NondeterministicFiniteAutomaton,
+    State,
+    Symbol,
+)
 
 from project import automath
 from project import utilities
@@ -70,11 +75,15 @@ def test_equivalence_nfa_by_graph():
     expected_nfa.add_final_state(st2)
     expected_nfa.add_final_state(st3)
 
-    expected_nfa.add_transitions([(st0, first, st1),
-                                 (st1, first, st0),
-                                 (st0, second, st2),
-                                 (st4, second, st0),
-                                 (st3, second, st4),
-                                 (st2, second, st3)])
+    expected_nfa.add_transitions(
+        [
+            (st0, first, st1),
+            (st1, first, st0),
+            (st0, second, st2),
+            (st4, second, st0),
+            (st3, second, st4),
+            (st2, second, st3),
+        ]
+    )
 
     assert nfa.is_equivalent_to(expected_nfa)
