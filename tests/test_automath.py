@@ -1,3 +1,4 @@
+import itertools
 import cfpq_data as cfpq
 from pyformlang.finite_automaton import (
     DeterministicFiniteAutomaton,
@@ -83,3 +84,27 @@ def test_equivalence_nfa_by_graph():
     )
 
     assert nfa.is_equivalent_to(expected_nfa)
+
+
+def test_intersect():
+    regexes = [
+        "abc def",
+        "abc def*",
+        "abc def | def abc",
+        "xy z | a b*"
+    ]
+    automates = [automath.build_minimal_dfa_from_regex(expr) for expr in regexes]
+    for first, second in itertools.product(automates, automates):
+        expected = first.get_intersection(second)
+        got = automath.intersect(first, second)
+        assert expected.is_equivalent_to(got)
+
+
+def test_query():
+    regex = "d*a*n*i*e*l*"
+    graph = generate_graph(3, 3, labels=("a", "b"))
+    start_states = {0}
+    final_states = {1, 2, 3}
+
+    actual = automath.query_regex_graph(regex, graph, start_states, final_states)
+    assert actual == {(0, 1), (0, 2), (0, 3)}
