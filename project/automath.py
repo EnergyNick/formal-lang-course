@@ -1,6 +1,6 @@
 import networkx as ntwx
 import pyformlang.finite_automaton as auto
-from pyformlang.regular_expression import Regex
+from pyformlang.regular_expression import PythonRegex
 
 
 def build_minimal_dfa_from_regex(raw_regex: str) -> auto.DeterministicFiniteAutomaton:
@@ -9,7 +9,7 @@ def build_minimal_dfa_from_regex(raw_regex: str) -> auto.DeterministicFiniteAuto
     :param raw_regex: string with regular expression
     :return: Minimized automation from regex
     """
-    regex = Regex(raw_regex)
+    regex = PythonRegex(raw_regex)
     return regex.to_epsilon_nfa().minimize()
 
 

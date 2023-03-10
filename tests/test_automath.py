@@ -6,16 +6,11 @@ from pyformlang.finite_automaton import (
     Symbol,
 )
 
-from project import automath
-from project import utilities
+from project import automath, utilities
 
 
-def generate_graph():
-    return cfpq.labeled_two_cycles_graph(4, 8, labels=("first", "second"))
-
-
-def generate_small_graph():
-    return cfpq.labeled_two_cycles_graph(1, 3, labels=("first", "second"))
+def generate_graph(n, m, labels=("first", "second")):
+    return cfpq.labeled_two_cycles_graph(n, m, labels=labels)
 
 
 def test_equivalence_min_dfa_by_regex():
@@ -24,17 +19,18 @@ def test_equivalence_min_dfa_by_regex():
     expected_dfa = DeterministicFiniteAutomaton()
     st0 = State(0)
     st23 = State("2;3")
+    st45 = State("4;5")
     st1 = State(1)
     expected_dfa.add_start_state(st0)
     expected_dfa.add_final_state(st1)
-    expected_dfa.add_transitions([(st0, "xy", st23), (st23, "z", st1)])
+    expected_dfa.add_transitions([(st45, "z", st1), (st23, "y", st45), (st0, "x", st23)])
 
     assert dfa.is_equivalent_to(expected_dfa)
     assert dfa == dfa.minimize()
 
 
 def test_create_nfa_with_correct_unsetted_start_and_end_states():
-    graph = generate_graph()
+    graph = generate_graph(4, 8)
     nfa = automath.build_nfa_from_graph(graph)
 
     info = utilities.get_graph_info(graph)
@@ -45,7 +41,7 @@ def test_create_nfa_with_correct_unsetted_start_and_end_states():
 
 
 def test_create_nfa_with_correct_start_and_end_states():
-    graph = generate_graph()
+    graph = generate_graph(4, 8)
     start_states = [0, 3]
     end_states = [2, 7, 8]
     nfa = automath.build_nfa_from_graph(graph, start_states, end_states)
@@ -57,7 +53,7 @@ def test_create_nfa_with_correct_start_and_end_states():
 
 
 def test_equivalence_nfa_by_graph():
-    graph = generate_small_graph()
+    graph = generate_graph(1, 3)
     nfa = automath.build_nfa_from_graph(graph, [0], [2, 3])
 
     expected_nfa = NondeterministicFiniteAutomaton()
