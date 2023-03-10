@@ -24,7 +24,9 @@ def test_equivalence_min_dfa_by_regex():
     st1 = State(1)
     expected_dfa.add_start_state(st0)
     expected_dfa.add_final_state(st1)
-    expected_dfa.add_transitions([(st45, "z", st1), (st23, "y", st45), (st0, "x", st23)])
+    expected_dfa.add_transitions(
+        [(st45, "z", st1), (st23, "y", st45), (st0, "x", st23)]
+    )
 
     assert dfa.is_equivalent_to(expected_dfa)
     assert dfa == dfa.minimize()
@@ -87,12 +89,7 @@ def test_equivalence_nfa_by_graph():
 
 
 def test_intersect():
-    regexes = [
-        "abc def",
-        "abc def*",
-        "abc def | def abc",
-        "xy z | a b*"
-    ]
+    regexes = ["abc def", "abc def*", "abc def | def abc", "xy z | a b*"]
     automates = [automath.build_minimal_dfa_from_regex(expr) for expr in regexes]
     for first, second in itertools.product(automates, automates):
         expected = first.get_intersection(second)

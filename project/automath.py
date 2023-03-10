@@ -16,7 +16,7 @@ def build_minimal_dfa_from_regex(raw_regex: str) -> auto.DeterministicFiniteAuto
 
 
 def build_nfa_from_graph(
-        graph: ntwx.Graph, start_nodes=None, end_nodes=None
+    graph: ntwx.Graph, start_nodes=None, end_nodes=None
 ) -> auto.EpsilonNFA:
     """
     Build nondeterministic finite automaton
@@ -36,7 +36,9 @@ def build_nfa_from_graph(
     return result
 
 
-def intersect(first: auto.FiniteAutomaton, second: auto.FiniteAutomaton) -> auto.FiniteAutomaton:
+def intersect(
+    first: auto.FiniteAutomaton, second: auto.FiniteAutomaton
+) -> auto.FiniteAutomaton:
     """
     Create automatons representing intersection of two finite automatons.
     :return:
@@ -47,7 +49,9 @@ def intersect(first: auto.FiniteAutomaton, second: auto.FiniteAutomaton) -> auto
     return first_repr.intersect(second_repr).to_automaton()
 
 
-def query_regex_graph(regex: str, graph: ntwx.Graph, start_states=None, final_states=None):
+def query_regex_graph(
+    regex: str, graph: ntwx.Graph, start_states=None, final_states=None
+):
     """
     Query finite automaton by regular expression.
     :param regex: string with regular expression
@@ -56,8 +60,12 @@ def query_regex_graph(regex: str, graph: ntwx.Graph, start_states=None, final_st
     :param final_states: final states of graph
     :return: set of initial and final state pairs
     """
-    graph_repr = AutomatonRepresentation.from_automaton(build_nfa_from_graph(graph, start_states, final_states))
-    regex_repr = AutomatonRepresentation.from_automaton(build_minimal_dfa_from_regex(regex))
+    graph_repr = AutomatonRepresentation.from_automaton(
+        build_nfa_from_graph(graph, start_states, final_states)
+    )
+    regex_repr = AutomatonRepresentation.from_automaton(
+        build_minimal_dfa_from_regex(regex)
+    )
     intersected = graph_repr.intersect(regex_repr)
     rows, columns = intersected.transitive_closure().nonzero()
 
