@@ -75,3 +75,23 @@ def query_regex_graph(
         if row in intersected.start_states and column in intersected.final_states:
             result.add((row // count, column // count))
     return result
+
+
+def rpq_by_bfs(
+    graph, regex, start_states=None, final_states=None, for_each_start=False
+):
+    """
+    Query finite automaton by regular expression by "BFS" method.
+    :param regex: string with regular expression
+    :param graph: graph to search
+    :param start_states: start states of graph
+    :param final_states: final states of graph
+    :return: set of initial and final state pairs
+    :param for_each_start:
+    :return: set of initial and final state pairs
+    """
+    nfa = build_nfa_from_graph(graph, start_states, final_states)
+    minimal_dfa = build_minimal_dfa_from_regex(regex)
+    graph_repr = AutomatonRepresentation.from_automaton(nfa)
+    regex_repr = AutomatonRepresentation.from_automaton(minimal_dfa)
+    return graph_repr.sync_bfs(regex_repr, for_each_start)
