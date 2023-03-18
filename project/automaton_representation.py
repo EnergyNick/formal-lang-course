@@ -60,7 +60,9 @@ class AutomatonRepresentation:
         return automaton
 
     def get_intersection_of_labels(self, other):
-        return set(self.transitions_matrix.keys()).intersection(set(other.transitions_matrix.keys()))
+        return set(self.transitions_matrix.keys()).intersection(
+            set(other.transitions_matrix.keys())
+        )
 
     def intersect(self, automaton):
         labels = self.get_intersection_of_labels(automaton)
@@ -101,24 +103,40 @@ class AutomatonRepresentation:
         return matrix
 
     def sync_bfs(self, target_automaton, for_each_start=False):
-        start_states_indices, visited = self._bfs_cycle(target_automaton, for_each_start)
+        start_states_indices, visited = self._bfs_cycle(
+            target_automaton, for_each_start
+        )
 
         results = set()
         target_states_names = list(target_automaton.states.keys())
         self_states_names = list(self.states.keys())
         target_count = len(target_automaton.states)
         for i, j in zip(*visited.nonzero()):
-            if j >= target_count and target_states_names[i % target_count] in target_automaton.final_states:
+            if (
+                j >= target_count
+                and target_states_names[i % target_count]
+                in target_automaton.final_states
+            ):
                 current = j - target_count
                 if self_states_names[current] in self.final_states:
-                    element = (start_states_indices[i // target_count], current) if for_each_start else current
+                    element = (
+                        (start_states_indices[i // target_count], current)
+                        if for_each_start
+                        else current
+                    )
                     results.add(element)
         return results
 
     def build_initial(self, target_automaton, start_states_indices):
         count = len(self.states)
         target_count = len(target_automaton.states)
-        initial = dok_matrix((target_count, count + target_count,), dtype=bool)
+        initial = dok_matrix(
+            (
+                target_count,
+                count + target_count,
+            ),
+            dtype=bool,
+        )
         start = dok_matrix((1, count), dtype=bool)
         for i in start_states_indices:
             start[0, i] = True
@@ -131,9 +149,7 @@ class AutomatonRepresentation:
     def _bfs_cycle(self, target, for_each_start):
         start_states_indices = [self.states[state] for state in self.start_states]
         current = (
-            vstack(
-                [self.build_initial(target, {i}) for i in start_states_indices]
-            )
+            vstack([self.build_initial(target, {i}) for i in start_states_indices])
             if for_each_start
             else self.build_initial(target, start_states_indices)
         )
@@ -141,7 +157,9 @@ class AutomatonRepresentation:
         direct_sum = dict()
         for label in labels:
             direct_sum[label] = dok_matrix(
-                block_diag((target.transitions_matrix[label], self.transitions_matrix[label]))
+                block_diag(
+                    (target.transitions_matrix[label], self.transitions_matrix[label])
+                )
             )
 
         visited = dok_matrix(current.shape, dtype=bool)
@@ -166,7 +184,7 @@ class AutomatonRepresentation:
             if j < target_count:
                 row = current[i, target_count:]
                 if row.nnz > 0:
-                    each_start = (i // target_count * target_count)
+                    each_start = i // target_count * target_count
                     transformed_current[each_start + j, j] = True
                     transformed_current[each_start + j, target_count:] += row
         return transformed_current

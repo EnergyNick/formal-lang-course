@@ -112,9 +112,7 @@ def test_bfs_query():
     graph = nx.MultiDiGraph()
     graph.add_nodes_from([0, 1, 2])
     edges = [(0, "a", 1), (1, "a", 2)]
-    graph.add_edges_from(
-        list(map(lambda x: (x[0], x[2], {"label": x[1]}), edges))
-    )
+    graph.add_edges_from(list(map(lambda x: (x[0], x[2], {"label": x[1]}), edges)))
 
     start_nodes = {0, 1}
     query_with_end = automath.rpq_by_bfs(graph, "a*", start_nodes, {2}, True)
