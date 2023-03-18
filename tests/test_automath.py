@@ -1,5 +1,6 @@
 import itertools
 import cfpq_data as cfpq
+import networkx as nx
 from pyformlang.finite_automaton import (
     DeterministicFiniteAutomaton,
     NondeterministicFiniteAutomaton,
@@ -105,3 +106,19 @@ def test_query():
 
     actual = automath.query_regex_graph(regex, graph, start_states, final_states)
     assert actual == {(0, 1), (0, 2), (0, 3)}
+
+
+def test_bfs_query():
+    graph = nx.MultiDiGraph()
+    graph.add_nodes_from([0, 1, 2])
+    edges = [(0, "a", 1), (1, "a", 2)]
+    graph.add_edges_from(
+        list(map(lambda x: (x[0], x[2], {"label": x[1]}), edges))
+    )
+
+    start_nodes = {0, 1}
+    query_with_end = automath.rpq_by_bfs(graph, "a*", start_nodes, {2}, True)
+    query_complex = automath.rpq_by_bfs(graph, "a*", start_nodes, None, False)
+
+    assert query_with_end == {(1, 2), (0, 2)}
+    assert query_complex == {1, 2}
