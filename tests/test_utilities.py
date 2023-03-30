@@ -60,8 +60,8 @@ def assert_cfgs(first: CFG, second: CFG):
 
 
 def test_cfg_from_file(tmpdir):
-    path = tmpdir + 'test.txt'
-    with open(path, 'w') as f:
+    path = tmpdir + "test.txt"
+    with open(path, "w") as f:
         f.write("S -> A\nA -> B\nB -> b")
 
     actual = utilities.parse_cfg_from_file(path)
