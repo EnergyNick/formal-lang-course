@@ -1,6 +1,7 @@
 import cfpq_data as cfpq
 import networkx as ntwx
 from collections import namedtuple
+from pyformlang.cfg import CFG
 
 GraphInfo = namedtuple("GraphInfo", ["nodes_count", "edges_count", "labels"])
 
@@ -32,3 +33,18 @@ def create_two_cycles_graph_to_file(
         n=first_nodes, m=second_nodes, labels=(first_label, second_label)
     )
     save_graph_to_file(graph, file_path)
+
+
+def parse_cfg_from_file(file_path) -> CFG:
+    with open(file_path, "r") as file:
+        content = file.read()
+    return CFG.from_text(content)
+
+
+def convert_to_weak_form(cfg: CFG) -> CFG:
+    cleared_cfg = cfg.remove_useless_symbols()
+    cleared_cfg = cleared_cfg.eliminate_unit_productions().remove_useless_symbols()
+
+    weak_cfg = cleared_cfg._get_productions_with_only_single_terminals()
+    weak_cfg = cleared_cfg._decompose_productions(weak_cfg)
+    return CFG(start_symbol=cleared_cfg.start_symbol, productions=set(weak_cfg))
