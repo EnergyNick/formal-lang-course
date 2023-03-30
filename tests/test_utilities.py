@@ -1,6 +1,5 @@
 import filecmp
 import os.path
-import tempfile
 
 import cfpq_data as cfpq
 import pytest
@@ -60,10 +59,12 @@ def assert_cfgs(first: CFG, second: CFG):
     assert first.productions == second.productions
 
 
-def test_cfg_from_file():
-    temp = tempfile.TemporaryFile()
-    temp.write(b"S -> A\nA -> B\nB -> b")
-    actual = utilities.parse_cfg_from_file(temp.name)
+def test_cfg_from_file(tmpdir):
+    path = tmpdir + 'test.txt'
+    with open(path, 'w') as f:
+        f.write("S -> A\nA -> B\nB -> b")
+
+    actual = utilities.parse_cfg_from_file(path)
     varS = Variable("S")
     varA = Variable("A")
     varB = Variable("B")
