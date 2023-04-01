@@ -42,8 +42,7 @@ def parse_cfg_from_file(file_path) -> CFG:
 
 
 def convert_to_weak_form(cfg: CFG) -> CFG:
-    cleared_cfg = cfg.remove_useless_symbols()
-    cleared_cfg = cleared_cfg.eliminate_unit_productions().remove_useless_symbols()
+    cleared_cfg = cfg.eliminate_unit_productions().remove_useless_symbols()
 
     weak_cfg = cleared_cfg._get_productions_with_only_single_terminals()
     weak_cfg = cleared_cfg._decompose_productions(weak_cfg)
