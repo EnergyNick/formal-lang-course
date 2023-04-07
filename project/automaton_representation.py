@@ -5,6 +5,9 @@ from scipy.sparse import dok_matrix, kron, vstack, block_diag
 
 
 class AutomatonRepresentation:
+    """
+    Provide useful representation of automation for different operations
+    """
     def __init__(
         self,
         start_states: Set = None,
