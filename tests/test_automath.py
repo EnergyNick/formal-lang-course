@@ -16,7 +16,7 @@ def generate_graph(n, m, labels=("first", "second")):
 
 
 def test_equivalence_min_dfa_by_regex():
-    dfa = automath.build_minimal_dfa_from_regex("xy(z)")
+    dfa = automath.build_minimal_dfa_from_text("xy(z)")
 
     expected_dfa = DeterministicFiniteAutomaton()
     st0 = State(0)
@@ -91,7 +91,7 @@ def test_equivalence_nfa_by_graph():
 
 def test_intersect():
     regexes = ["abc def", "abc def*", "abc def | def abc", "xy z | a b*"]
-    automates = [automath.build_minimal_dfa_from_regex(expr) for expr in regexes]
+    automates = [automath.build_minimal_dfa_from_text(expr) for expr in regexes]
     for first, second in itertools.product(automates, automates):
         expected = first.get_intersection(second)
         got = automath.intersect(first, second)
