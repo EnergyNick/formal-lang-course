@@ -56,4 +56,3 @@ class RecursiveAutomaton:
                 ] = True
 
         return states, matrix
-
