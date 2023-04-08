@@ -46,7 +46,7 @@ def build_nfa_from_graph(
 
 
 def intersect(
-        first: auto.FiniteAutomaton, second: auto.FiniteAutomaton
+    first: auto.FiniteAutomaton, second: auto.FiniteAutomaton
 ) -> auto.FiniteAutomaton:
     """
     Create automatons representing intersection of two finite automatons.
@@ -59,7 +59,7 @@ def intersect(
 
 
 def query_regex_graph(
-        regex: str, graph: ntwx.Graph, start_states=None, final_states=None
+    regex: str, graph: ntwx.Graph, start_states=None, final_states=None
 ):
     """
     Query finite automaton by regular expression.
@@ -87,7 +87,7 @@ def query_regex_graph(
 
 
 def rpq_by_bfs(
-        graph, regex_str: str, start_states=None, final_states=None, for_each_start=False
+    graph, regex_str: str, start_states=None, final_states=None, for_each_start=False
 ):
     """
     Query finite automaton by regular expression by "BFS" method.

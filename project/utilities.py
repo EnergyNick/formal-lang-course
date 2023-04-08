@@ -24,11 +24,11 @@ def save_graph_to_file(graph: ntwx.Graph, file_path: str):
 
 
 def create_two_cycles_graph_to_file(
-        file_path: str,
-        first_nodes: int,
-        first_label: str,
-        second_nodes: int,
-        second_label: str,
+    file_path: str,
+    first_nodes: int,
+    first_label: str,
+    second_nodes: int,
+    second_label: str,
 ):
     graph = cfpq.labeled_two_cycles_graph(
         n=first_nodes, m=second_nodes, labels=(first_label, second_label)

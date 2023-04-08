@@ -8,6 +8,7 @@ class AutomatonRepresentation:
     """
     Provide useful representation of automation for different operations
     """
+
     def __init__(
         self,
         start_states: Set = None,

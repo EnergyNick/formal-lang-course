@@ -8,6 +8,7 @@ class RecursiveAutomaton:
     """
     Class of recursive finite automaton
     """
+
     def __init__(self, start_symbol: Variable, boxes: dict[Variable, EpsilonNFA]):
         self.start_symbol: Variable = start_symbol
         self.boxes: dict[Variable, EpsilonNFA] = boxes
@@ -28,5 +29,7 @@ class RecursiveAutomaton:
         :param ecfg: original grammar
         :return: recursive automation of grammar
         """
-        elements = {head: body.to_epsilon_nfa() for head, body in ecfg.productions.items()}
+        elements = {
+            head: body.to_epsilon_nfa() for head, body in ecfg.productions.items()
+        }
         return cls(ecfg.start_symbol, elements)

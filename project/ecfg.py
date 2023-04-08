@@ -6,12 +6,13 @@ class ECFG:
     """
     Class of extended context-free grammar
     """
+
     def __init__(
-            self,
-            start_symbol: Variable,
-            variables: set[Variable],
-            productions: dict[Variable, Regex],
-            terminals: set[Terminal] = None,
+        self,
+        start_symbol: Variable,
+        variables: set[Variable],
+        productions: dict[Variable, Regex],
+        terminals: set[Terminal] = None,
     ):
         self.start_symbol: Variable = start_symbol
         self.variables: set[Variable] = variables
@@ -27,10 +28,18 @@ class ECFG:
         """
         productions: dict = {}
         for item in cfg.productions:
-            regexStr = "" if len(item.body) == 0 else " ".join(s.value for s in item.body)
+            regexStr = (
+                "" if len(item.body) == 0 else " ".join(s.value for s in item.body)
+            )
             regex = Regex(regexStr)
-            productions[item.head] = productions[item.head].union(regex) if item.head in productions else regex
-        return cls(cfg.start_symbol, set(cfg.variables), productions, set(cfg.terminals))
+            productions[item.head] = (
+                productions[item.head].union(regex)
+                if item.head in productions
+                else regex
+            )
+        return cls(
+            cfg.start_symbol, set(cfg.variables), productions, set(cfg.terminals)
+        )
 
     @classmethod
     def from_text(cls, text: str, start_symbol=Variable("S")):
