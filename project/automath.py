@@ -1,17 +1,26 @@
 import networkx as ntwx
 import pyformlang.finite_automaton as auto
-from pyformlang.regular_expression import PythonRegex
+from pyformlang.regular_expression import PythonRegex, Regex
 
 from project.automaton_representation import AutomatonRepresentation
 
 
-def build_minimal_dfa_from_regex(raw_regex: str) -> auto.DeterministicFiniteAutomaton:
+def build_minimal_dfa_from_text(raw_regex: str) -> auto.DeterministicFiniteAutomaton:
     """
     Build deterministic finite automaton from string with regular expression
     :param raw_regex: string with regular expression
     :return: Minimized automation from regex
     """
     regex = PythonRegex(raw_regex)
+    return regex.to_epsilon_nfa().minimize()
+
+
+def build_minimal_dfa_from_regex(regex: Regex) -> auto.DeterministicFiniteAutomaton:
+    """
+    Build deterministic finite automaton from regular expression
+    :param regex: regular expression
+    :return: Minimized automation from regex
+    """
     return regex.to_epsilon_nfa().minimize()
 
 
@@ -64,7 +73,7 @@ def query_regex_graph(
         build_nfa_from_graph(graph, start_states, final_states)
     )
     regex_repr = AutomatonRepresentation.from_automaton(
-        build_minimal_dfa_from_regex(regex)
+        build_minimal_dfa_from_text(regex)
     )
     intersected = graph_repr.intersect(regex_repr)
     rows, columns = intersected.transitive_closure().nonzero()
@@ -78,11 +87,11 @@ def query_regex_graph(
 
 
 def rpq_by_bfs(
-    graph, regex, start_states=None, final_states=None, for_each_start=False
+    graph, regex_str: str, start_states=None, final_states=None, for_each_start=False
 ):
     """
     Query finite automaton by regular expression by "BFS" method.
-    :param regex: string with regular expression
+    :param regex_str: string with regular expression
     :param graph: graph to search
     :param start_states: start states of graph
     :param final_states: final states of graph
@@ -91,7 +100,7 @@ def rpq_by_bfs(
     :return: set of initial and final state pairs
     """
     nfa = build_nfa_from_graph(graph, start_states, final_states)
-    minimal_dfa = build_minimal_dfa_from_regex(regex)
+    minimal_dfa = build_minimal_dfa_from_text(regex_str)
     graph_repr = AutomatonRepresentation.from_automaton(nfa)
     regex_repr = AutomatonRepresentation.from_automaton(minimal_dfa)
     return graph_repr.sync_bfs(regex_repr, for_each_start)
