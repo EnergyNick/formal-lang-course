@@ -60,13 +60,21 @@ def hellings_algorithm(graph: Union[MultiDiGraph, str], cfg: Union[CFG, str]):
             if v == u1:
                 for prod in variables_prod:
                     closure = (prod.head, v1, u)
-                    if prod.body[0] == var2 and prod.body[1] == var1 and closure not in result:
+                    if (
+                        prod.body[0] == var2
+                        and prod.body[1] == var1
+                        and closure not in result
+                    ):
                         to_append.add(closure)
                         queue.append(closure)
             if u == v1:
                 for prod in variables_prod:
                     closure = (prod.head, v, u1)
-                    if prod.body[0] == var1 and prod.body[1] == var2 and closure not in result:
+                    if (
+                        prod.body[0] == var1
+                        and prod.body[1] == var2
+                        and closure not in result
+                    ):
                         to_append.add(closure)
                         queue.append(closure)
         result = result.union(to_append)

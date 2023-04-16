@@ -59,10 +59,14 @@ def test_helings_algorithm():
         (Variable("A"), 1, 2),
         (Variable("A"), 2, 0),
         (Variable("B"), 2, 3),
-        (Variable("B"), 3, 2)
+        (Variable("B"), 3, 2),
     }
-    expected = expected.union([(Variable("C"), i, j) for j in range(2, 4) for i in range(0, 3)])
-    expected = expected.union([(Variable("S"), i, j) for j in range(2, 4) for i in range(0, 3)])
+    expected = expected.union(
+        [(Variable("C"), i, j) for j in range(2, 4) for i in range(0, 3)]
+    )
+    expected = expected.union(
+        [(Variable("S"), i, j) for j in range(2, 4) for i in range(0, 3)]
+    )
 
     hellings_result = grammatics.hellings_algorithm(graph, cfg)
     assert len(hellings_result.difference(expected)) == 0
