@@ -20,6 +20,16 @@ def query_graph_with_cfg(
     final_nodes: set = None,
     start_symbol: Variable = Variable("S"),
 ):
+    """
+    Query finite automaton with a context-free grammar
+
+    :param graph: Graph to query. If value will be string, method convert it to MultiDiGraph
+    :param cfg: Context-free grammar. If value will be string, method convert it to CFG
+    :param start_nodes: Start nodes in graph
+    :param final_nodes: End nodes in graph
+    :param start_symbol: Start symbol in context-free grammar
+    :return: Set of start and end pairs, where can be accessible by query
+    """
     start_nodes = graph.nodes if start_nodes is None else start_nodes
     final_nodes = graph.nodes if final_nodes is None else final_nodes
 
@@ -31,6 +41,13 @@ def query_graph_with_cfg(
 
 
 def hellings_algorithm(graph: Union[MultiDiGraph, str], cfg: Union[CFG, str]):
+    """
+    Apply Hellings' algorithm to a graph
+
+    :param graph: Graph to query. If value will be string, method convert it to MultiDiGraph
+    :param cfg: Context-free grammar. If value will be string, method convert it to CFG
+    :return: set of tuples with variable, starting and ending node
+    """
     if isinstance(graph, str):
         graph = drawing.nx_pydot.from_pydot(pydot.graph_from_dot_data(graph)[0])
     if isinstance(cfg, str):
