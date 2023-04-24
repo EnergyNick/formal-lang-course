@@ -70,6 +70,7 @@ def get_graph_with_cfg_with_expected():
 
     return graph, cfg, expected
 
+
 def test_helings_algorithm():
     graph, cfg, expected = get_graph_with_cfg_with_expected()
 
@@ -100,6 +101,7 @@ def test_query_matrix_cfg_graph():
     start_nodes = {0, 2}
     final_nodes = {3}
 
-    query_result = grammatics.query_graph_with_cfg(graph, cfg, start_nodes, final_nodes,
-                                                   algorithm=grammatics.matrix_algorithm)
+    query_result = grammatics.query_graph_with_cfg(
+        graph, cfg, start_nodes, final_nodes, algorithm=grammatics.matrix_algorithm
+    )
     assert query_result == {(0, 3), (2, 3)}

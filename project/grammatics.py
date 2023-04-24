@@ -138,7 +138,9 @@ def query_graph_with_cfg(
     start_nodes: set = None,
     final_nodes: set = None,
     start_symbol: Variable = Variable("S"),
-    algorithm: Callable[[MultiDiGraph, CFG], set[tuple[Variable, int, int]]] = hellings_algorithm
+    algorithm: Callable[
+        [MultiDiGraph, CFG], set[tuple[Variable, int, int]]
+    ] = hellings_algorithm,
 ):
     """
     Query finite automaton with a context-free grammar
@@ -159,4 +161,3 @@ def query_graph_with_cfg(
         for (variable, u, v) in algorithm(graph, cfg)
         if variable == start_symbol and u in start_nodes and v in final_nodes
     }
-
