@@ -51,7 +51,7 @@ def get_graph_with_cfg() -> tuple[MultiDiGraph, str]:
     return graph, cfg
 
 
-def test_helings_algorithm():
+def get_graph_with_cfg_with_expected():
     graph, cfg = get_graph_with_cfg()
 
     expected = {
@@ -68,6 +68,12 @@ def test_helings_algorithm():
         [(Variable("S"), i, j) for j in range(2, 4) for i in range(0, 3)]
     )
 
+    return graph, cfg, expected
+
+
+def test_helings_algorithm():
+    graph, cfg, expected = get_graph_with_cfg_with_expected()
+
     hellings_result = grammatics.hellings_algorithm(graph, cfg)
     assert len(hellings_result.difference(expected)) == 0
 
@@ -79,4 +85,23 @@ def test_query_cfg_graph():
     final_nodes = {3}
 
     query_result = grammatics.query_graph_with_cfg(graph, cfg, start_nodes, final_nodes)
+    assert query_result == {(0, 3), (2, 3)}
+
+
+def test_matrix_algorithm():
+    graph, cfg, expected = get_graph_with_cfg_with_expected()
+
+    result = grammatics.matrix_algorithm(graph, cfg)
+    assert len(result.difference(expected)) == 0
+
+
+def test_query_matrix_cfg_graph():
+    graph, cfg = get_graph_with_cfg()
+
+    start_nodes = {0, 2}
+    final_nodes = {3}
+
+    query_result = grammatics.query_graph_with_cfg(
+        graph, cfg, start_nodes, final_nodes, algorithm=grammatics.matrix_algorithm
+    )
     assert query_result == {(0, 3), (2, 3)}
