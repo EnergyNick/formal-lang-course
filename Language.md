@@ -63,18 +63,18 @@ Statement: Bind | Print
 
 Expr ->
     COMMENT
-  | IDENT                                  
-  | Value   
-  | '(' expr ')'   
+  | IDENT
+  | Value
+  | '(' expr ')'
   | Expr 'starts =#' Expr               // Set
   | Expr 'finals =#' Expr               // Set
   | Expr 'starts =+' Expr               // Add
   | Expr 'finals =+' Expr               // Add
   | 'starts >>' Expr                    // Get...
-  | 'finals >>' Expr            
-  | 'reachables >>' Expr       
-  | 'vertices >>' Expr         
-  | 'edges >>' Expr            
+  | 'finals >>' Expr
+  | 'reachables >>' Expr
+  | 'vertices >>' Expr
+  | 'edges >>' Expr
   | 'labels >>' Expr                                 // ...Get
   | Lambda '=>' Expr                                 // Map
   | Lambda '?=>' Expr                                // Filter
