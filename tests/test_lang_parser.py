@@ -1,14 +1,19 @@
-from project.language.lang_parser import is_text_correct_in_language, generate_dot_to_str
+from project.language.lang_parser import (
+    is_text_correct_in_language,
+    generate_dot_to_str,
+)
 from textwrap import dedent
 
 
 def test_empty():
     assert is_text_correct_in_language("")
     assert is_text_correct_in_language("           ")
-    assert is_text_correct_in_language("""
+    assert is_text_correct_in_language(
+        """
     // BABABABBA
-    
-    """)
+
+    """
+    )
 
 
 def test_not_parsing():
@@ -36,7 +41,7 @@ def test_bind_statement():
 
 def test_lambda_statement():
     assert is_text_correct_in_language("var res = x -> x => edges >> graph ;")
-    assert is_text_correct_in_language("var res = x -> (x ?> \"a\") ?=> edges >> graph ;")
+    assert is_text_correct_in_language('var res = x -> (x ?> "a") ?=> edges >> graph ;')
     assert not is_text_correct_in_language("var res = x -> x;")
     assert not is_text_correct_in_language("var res = x -> show i;")
 
@@ -48,7 +53,7 @@ def test_example_belongs():
 
 def test_to_dot():
     res = generate_dot_to_str(exampleShorted)
-    with open('exampleShorted.dot', 'r') as file:
+    with open("exampleShorted.dot", "r") as file:
         expected = file.read()
     print(dedent(res))
     assert dedent(res) == dedent(expected)
