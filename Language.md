@@ -42,19 +42,19 @@ lambda = Lambda of List<var> * expr
 
 ```
 
-COMMENT: '//'[^\n]*
+COMMENT: '//'~[\n]*
 
 IDENT: [a-zA-Z] [0-9a-zA-Z]*
 INT: '-'? [1-9][0-9]* | 0
-STRING: '"' ([^\\"])* '"'
+STRING: '"' (~[\\"])* '"'
 BOOL: 'true' | 'false'
-ARG: IDENT | '_' | ('('(ARG ', ')* ARG')')
 
-Value: INT | STRING | BOOL | Literals
+Arg: IDENT | '_' | ('('(ARG ', ')* ARG')')
+Value: INT | STRING | BOOL
 
 
 Bind: 'var' ARG '=' Expr
-Print: 'show' IDENT
+Print: 'show' Expr
 
 Lambda: ARG '->' Expr
 
@@ -62,8 +62,7 @@ Statement: Bind | Print
 
 
 Expr ->
-    COMMENT
-  | IDENT
+    IDENT
   | Value
   | '(' expr ')'
   | Expr 'starts =#' Expr               // Set
@@ -79,7 +78,7 @@ Expr ->
   | Lambda '=>' Expr                                 // Map
   | Lambda '?=>' Expr                                // Filter
   | 'import' Expr                                    // Load
-  | Expr '/\' Expr                                   // Intersect
+  | Expr '/\\' Expr                                  // Intersect
   | Expr '++' Expr                                   // Concat
   | Expr '&' Expr                                    // Union
   | Expr '*'                                         // Star
@@ -87,7 +86,7 @@ Expr ->
   | '{' (((Expr ', ')* Expr)? | INT '..' INT) '}'    // Set
   | Expr ==> Expr                                    // Единичный переход
 
-Program: ((Statement ';' EOL)+ | COMMENT) Program | EOF
+Program: (Statement ';')* EOF
 
 ```
 
@@ -98,21 +97,21 @@ Program: ((Statement ';' EOL)+ | COMMENT) Program | EOF
 var initial = import "TestGraph";
 var extended = import "ExtendedTestGraph";
 
-var upd1 = initial starts =+ {1..15}
-var upd2 = upd1 finals =+ 0
+var upd1 = initial starts =+ {1..15};
+var upd2 = upd1 finals =+ 0;
 
 // Перезапись вершин
-var upd3 = upd2 starts =# extended
+var upd3 = upd2 starts =# extended;
 
 // Пересечение и комбинация графов
-var cnct = (upd3) ++ upd2
-var inter = upd2 /\ initial
+var cnct = (upd3) ++ upd2;
+var inter = upd2 /\ initial;
 
-show cnct ?> 0
+show cnct ?> 0;
 
-show edges >> inter
+show edges >> inter;
 
 // Фильтрация графов, у кого есть вершина 2
-var res = (x -> (vertices >> x) ?> 2) ?=> {cnct, upd1, upd2}
+var res = (x -> (vertices >> x) ?> 2) ?=> {cnct, upd1, upd2};
 
 ```
