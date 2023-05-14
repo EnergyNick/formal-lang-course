@@ -53,7 +53,7 @@ def test_example_belongs():
 
 def test_to_dot():
     res = generate_dot_to_str(exampleShorted)
-    with open("exampleShorted.dot", "r") as file:
+    with open("./exampleShorted.dot", "r") as file:
         expected = file.read()
     print(dedent(res))
     assert dedent(res) == dedent(expected)
