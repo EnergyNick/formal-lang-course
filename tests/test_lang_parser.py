@@ -4,6 +4,12 @@ from project.language.lang_parser import (
 )
 from textwrap import dedent
 
+from tests.test_lang_parser_constants import (
+    exampleFromLang,
+    exampleShorted,
+    exampleDotFileContent,
+)
+
 
 def test_empty():
     assert is_text_correct_in_language("")
@@ -53,38 +59,4 @@ def test_example_belongs():
 
 def test_to_dot():
     res = generate_dot_to_str(exampleShorted)
-    with open("./exampleShorted.dot", "r") as file:
-        expected = file.read()
-    print(dedent(res))
-    assert dedent(res) == dedent(expected)
-
-
-exampleFromLang = """
-var initial = import "TestGraph";
-var extended = import "ExtendedTestGraph";
-
-var upd1 = initial starts =+ {1..15};
-var upd2 = upd1 finals =+ 0;
-
-// Test
-var upd3 = upd2 starts =# extended;
-
-var cnct = (upd3) ++ upd2;
-var inter = upd2 /\ initial;
-
-show cnct ?> 0;
-
-show edges >> inter;
-
-var res = (x -> (vertices >> x) ?> 2) ?=> {cnct, upd1, upd2};
-"""
-
-exampleShorted = """
-var initial = import "TestGraph";
-
-var upd1 = initial starts =+ {1..15};
-var inter = upd1 /\ initial;
-
-show edges >> inter;
-var res = (x -> (vertices >> x) ?> 2) ?=> {initial, upd1, inter};
-"""
+    assert dedent(res) == dedent(exampleDotFileContent)

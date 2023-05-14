@@ -1,4 +1,34 @@
-digraph tree {
+exampleFromLang = """
+var initial = import "TestGraph";
+var extended = import "ExtendedTestGraph";
+
+var upd1 = initial starts =+ {1..15};
+var upd2 = upd1 finals =+ 0;
+
+// Test
+var upd3 = upd2 starts =# extended;
+
+var cnct = (upd3) ++ upd2;
+var inter = upd2 /\ initial;
+
+show cnct ?> 0;
+
+show edges >> inter;
+
+var res = (x -> (vertices >> x) ?> 2) ?=> {cnct, upd1, upd2};
+"""
+
+exampleShorted = """
+var initial = import "TestGraph";
+
+var upd1 = initial starts =+ {1..15};
+var inter = upd1 /\ initial;
+
+show edges >> inter;
+var res = (x -> (vertices >> x) ?> 2) ?=> {initial, upd1, inter};
+"""
+
+exampleDotFileContent = """digraph tree {
 1 [label=program];
 1 -> 2;
 2 [label=statement];
@@ -21,7 +51,7 @@ digraph tree {
 10 -> 11;
 11 [label=value];
 11 -> 12;
-12 [label="TERM: \"TestGraph\""];
+12 [label="TERM: \\\"TestGraph\\\""];
 1 -> 13;
 13 [label="TERM: ;"];
 1 -> 14;
@@ -81,7 +111,7 @@ digraph tree {
 40 -> 41;
 41 [label="TERM: upd1"];
 38 -> 42;
-42 [label="TERM: /\"];
+42 [label="TERM: /\\\"];
 38 -> 43;
 43 [label=expr];
 43 -> 44;
@@ -197,3 +227,4 @@ digraph tree {
 1 -> 99;
 99 [label="TERM: <EOF>"];
 }
+"""
