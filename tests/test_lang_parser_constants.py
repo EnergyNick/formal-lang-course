@@ -235,5 +235,4 @@ exampleDotFileContent = """digraph tree {
 1 -> 103;
 103 [label="TERM: <EOF>"];
 }
-
 """
