@@ -87,6 +87,8 @@ class LangVisitor(GraphLangVisitor):
 
         if isinstance(result, EpsilonNFA):
             result = fau.convert_nfa_to_str(result)
+        elif isinstance(result, set):
+            result = result if len(result) != 0 else "{}"
 
         print(result)
 
@@ -255,6 +257,8 @@ class LangVisitor(GraphLangVisitor):
 
         if isinstance(val1, EpsilonNFA) and isinstance(val2, EpsilonNFA):
             return val1.concatenate(val2)
+        elif isinstance(val1, set) and isinstance(val2, set):
+            return val1.union(val2)
         elif isinstance(val1, str) and isinstance(val2, str):
             return val1 + val2
         else:
@@ -342,6 +346,16 @@ class LangVisitor(GraphLangVisitor):
             return val1 % val2
         else:
             raise InvalidGroupOperationException(val1, val2, "Module")
+
+    def visitDivExp(self, ctx: GraphLangParser.DivExpContext):
+        val1, val2 = self._get_parts_of_double_expr(ctx)
+
+        if isinstance(val1, int) and isinstance(val2, int):
+            return int(val1 / val2)
+        elif isinstance(val1, bool) and isinstance(val2, bool):
+            return bool(val1 / val2)
+        else:
+            raise InvalidGroupOperationException(val1, val2, "Divide")
 
     def visitEqualExp(self, ctx: GraphLangParser.EqualExpContext):
         val1, val2 = self._get_parts_of_double_expr(ctx)

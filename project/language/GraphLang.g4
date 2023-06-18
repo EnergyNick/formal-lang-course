@@ -59,6 +59,7 @@ expr:
   | expr '*' expr                   #multExp
   | expr '+' expr                   #sumExp
   | expr '-' expr                   #subExp
+  | expr '/' expr                   #divExp
   | expr '%' expr                   #modExp
   | expr '==' expr                  #equalExp
   ;
