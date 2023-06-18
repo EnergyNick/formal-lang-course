@@ -50,7 +50,11 @@ STRING: '"' (~[\\"])* '"'
 BOOL: 'true' | 'false'
 
 Arg: IDENT | '_' | ('('(ARG ', ')* ARG')')
-Value: INT | STRING | BOOL
+Value: 
+    INT 
+    | STRING 
+    | BOOL
+    | '{' (((Expr ', ')* Expr)? | INT '..' INT) '}'    // Set
 
 
 Bind: 'var' ARG '=' Expr
@@ -83,8 +87,11 @@ Expr ->
   | Expr '&' Expr                                    // Union
   | Expr '*'                                         // Star
   | Expr '?>' Expr                                   // Contains
-  | '{' (((Expr ', ')* Expr)? | INT '..' INT) '}'    // Set
-  | Expr ==> Expr                                    // Единичный переход
+  | Expr '+' Expr                                    // Sum
+  | Expr '*' Expr                                    // Mult
+  | Expr '-' Expr                                    // Substract
+  | Expr '/' Expr                                    // Divide
+  | Expr '%' Expr                                    // Module
 
 Program: (Statement ';')* EOF
 
