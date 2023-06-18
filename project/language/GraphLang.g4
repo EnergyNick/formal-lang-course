@@ -7,41 +7,60 @@ INT: '-'? [1-9][0-9]* | '0';
 STRING: '"' (~[\\"])* '"';
 BOOL: 'true' | 'false';
 
-arg: IDENT | '_' | ('('(arg ', ')* arg')');
-value: INT | STRING | BOOL;
+arg: IDENT   #nameArg
+    | '_'    #emptyArg
+    ;
+
+setBody:
+    ((expr ', ')* expr)?   #setBodyElements
+    | INT '..' INT         #setBodyRange
+    ;
+
+value:
+    INT                 #integerVal
+    | STRING            #stringVal
+    | BOOL              #booleanVal
+    | '{' setBody '}'   #setVal
+    ;
 
 bind: 'var' arg '=' expr;
 print: 'show' expr;
 
-lambda: arg '->' expr | '(' lambda ')';
+lambda:
+    arg '->' expr     #lambdaBody
+    | '(' lambda ')'  #lambdaBrackets
+    ;
 
 statement: bind | print;
 
 
 expr:
-  arg
-  | value
-  | '(' expr ')'
-  | expr 'starts =#' expr               // Set
-  | expr 'finals =#' expr               // Set
-  | expr 'starts =+' expr               // Add
-  | expr 'finals =+' expr               // Add
-  | 'starts >>' expr                    // Get...
-  | 'finals >>' expr
-  | 'reachables >>' expr
-  | 'vertices >>' expr
-  | 'edges >>' expr
-  | 'labels >>' expr                                 // ...Get
-  | lambda '=>' expr                                 // Map
-  | lambda '?=>' expr                                // Filter
-  | 'import' expr                                    // Load
-  | expr '/\\' expr                                  // Intersect
-  | expr '++' expr                                   // Concat
-  | expr '&' expr                                    // Union
-  | expr '*'                                         // Star
-  | expr '?>' expr                                   // Contains
-  | '{' (((expr ', ')* expr)? | INT '..' INT) '}'    // Set
-  | expr '==>' expr                                  // Единичный переход
+  arg                               #varExp
+  | value                           #valExp
+  | '(' expr ')'                    #bracketExp
+  | expr 'starts =#' expr           #setStartExp
+  | expr 'finals =#' expr           #setFinalExp
+  | expr 'starts =+' expr           #addStartExp
+  | expr 'finals =+' expr           #addFinalExp
+  | 'starts >>' expr                #getStartExp
+  | 'finals >>' expr                #getFinalExp
+  | 'reachables >>' expr            #reachExp
+  | 'vertices >>' expr              #vertsExp
+  | 'edges >>' expr                 #edgeExp
+  | 'labels >>' expr                #labelExp
+  | lambda '=>' expr                #mapExp
+  | lambda '?=>' expr               #filterExp
+  | 'import' expr                   #loadExp
+  | expr '/\\' expr                 #interExp
+  | expr '++' expr                  #concatExp
+  | expr '&' expr                   #unionExp
+  | expr '^'                        #starExp
+  | expr '?>' expr                  #containExp
+  | expr '*' expr                   #multExp
+  | expr '+' expr                   #sumExp
+  | expr '-' expr                   #subExp
+  | expr '%' expr                   #modExp
+  | expr '==' expr                  #equalExp
   ;
 
 program: (statement ';')* EOF;
