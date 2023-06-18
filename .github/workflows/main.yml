@@ -30,7 +30,7 @@ jobs:
           pip list
 
       - name: Generate ANTLR4 files
-        run: cd project/language && antlr4 -Dlanguage=Python3 GraphLang.g4
+        run: cd project/language && antlr4 -listener -visitor -Dlanguage=Python3 GraphLang.g4
 
       - name: Test with pytest
         run: python ./scripts/run_tests.py
