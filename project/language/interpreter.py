@@ -9,6 +9,8 @@ def interpreter(program: str):
 
     errorsCnt = parser.getNumberOfSyntaxErrors()
     if errorsCnt != 0:
-        raise InterpreterException(f"Exceptions in syntax errors, total count is {errorsCnt}")
+        raise InterpreterException(
+            f"Exceptions in syntax errors, total count is {errorsCnt}"
+        )
 
     visitor.visit(tree)

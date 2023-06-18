@@ -50,9 +50,9 @@ STRING: '"' (~[\\"])* '"'
 BOOL: 'true' | 'false'
 
 Arg: IDENT | '_' | ('('(ARG ', ')* ARG')')
-Value: 
-    INT 
-    | STRING 
+Value:
+    INT
+    | STRING
     | BOOL
     | '{' (((Expr ', ')* Expr)? | INT '..' INT) '}'    // Set
 
