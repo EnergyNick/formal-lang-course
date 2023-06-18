@@ -5,6 +5,11 @@ from pyformlang.regular_expression import PythonRegex, Regex
 from project.automaton_representation import AutomatonRepresentation
 
 
+def convert_nfa_to_str(automate: auto.FiniteAutomaton) -> str:
+    dot = ntwx.nx_pydot.to_pydot(automate.to_networkx())
+    return dot.to_string()
+
+
 def build_minimal_dfa_from_text(raw_regex: str) -> auto.DeterministicFiniteAutomaton:
     """
     Build deterministic finite automaton from string with regular expression
